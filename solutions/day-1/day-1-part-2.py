@@ -18,12 +18,11 @@ digit_map = {
 
 result = 0
 
-print(search("abc", "asdabcdd")[0])
-
 for value in input_str.split():
     digit_1 = search(r"\d|" + "|".join(digit_map), value)[0]
     if digit_1 in digit_map:
         digit_1 = digit_map[digit_1]
+    # search from the back to avoid overlapping numbers
     digit_2 = search(r"\d|" + "|".join(d[::-1] for d in digit_map), value[::-1])[0][::-1]
     if digit_2 in digit_map:
         digit_2 = digit_map[digit_2]
