@@ -3,7 +3,7 @@ input_str = f.read()
 f.close()
 
 
-# recursive function that go
+# recursive function that calls itself twice for both possibilities of "?"
 def count_arrangements(field, group_sizes):
 
     # terminate if remaining groups can't fit anymore
@@ -35,7 +35,6 @@ result = 0
 for line in input_str.split("\n"):
     field_str, group_size_str = line.split()
     group_size_list = [int(n) for n in group_size_str.split(",")]
-    k = count_arrangements(field_str, group_size_list)
-    result += k
+    result += count_arrangements(field_str, group_size_list)
 
 print(result)
