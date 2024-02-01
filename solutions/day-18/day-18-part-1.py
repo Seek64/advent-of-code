@@ -4,6 +4,9 @@ f = open("input.txt", "r")
 input_str = f.read()
 f.close()
 
+# This was a very educational task for me, learning how to calculate the area of a shape using coordinates.
+# Therefore, part 2 shows a much better solution for this problem.
+
 # compute size of the area
 i = j = 0
 min_i = max_i = min_j = max_j = 0
