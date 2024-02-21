@@ -1,8 +1,14 @@
 from queue import Queue
+from math import lcm
 
 f = open("input.txt", "r")
 input_str = f.read()
 f.close()
+
+# This was a challenging one.
+# Brute forcing the solution by simulating the entire network is not feasible.
+# However, the network is divided into four sub-networks which leaf to the "mf" conjunction.
+# Therefore, we can calculate the periods for each sub-network and compute the smallest common multiple.
 
 LOW = False
 HIGH = True
@@ -58,11 +64,31 @@ def push_button():
     return False
 
 
-# Brute forcing the solution is not feasible.
-# The Flip-flops alone can traverse 2^48 states.
-# A more efficient method is needed.
-button_presses = 0
-while not push_button():
-    button_presses += 1
+sub_networks = []
+for candidate in out_connections["broadcaster"]:
+    new_sub_network = [candidate]
+    i = 0
+    while i < len(new_sub_network):
+        src = new_sub_network[i]
+        i += 1
+        if src == "mf":
+            continue
+        for tar in out_connections[src]:
+            if tar not in new_sub_network:
+                new_sub_network.append(tar)
+    new_sub_network = [x for x in new_sub_network if x in ff_states]
+    sub_networks.append(new_sub_network)
 
-print(button_presses)
+cnt = 0
+periods = [0] * len(sub_networks)
+while 0 in periods:
+    push_button()
+    cnt += 1
+    for i in range(len(sub_networks)):
+        if len(sub_networks[i]) == len([x for x in sub_networks[i] if ff_states[x] == LOW]):
+            periods[i] = cnt
+
+# The required outputs are only set correctly if all flip-flops are LOW.
+# Therefore, we can simply calculate the LCM of the period lengths.
+result = lcm(*periods)
+print(result)
